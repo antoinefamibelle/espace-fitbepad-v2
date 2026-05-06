@@ -1,15 +1,16 @@
 import Stripe from 'stripe';
 
 export const stripeBuilder = (slug: string) => {
-  let apiKey = process.env.STRIPE_SECRET_KEY;
+  const apiKey = process.env.STRIPE_SECRET_KEY;
+  if (!apiKey) {
+    throw new Error('Missing STRIPE_SECRET_KEY');
+  }
 
-  const stripe = new Stripe(apiKey!, {
+  const stripe = new Stripe(apiKey, {
     apiVersion: '2026-04-22.dahlia',
   });
   return stripe;
 };
-
-export const stripe = stripeBuilder('');
 
 interface CreateCheckoutSessionParams {
   centerSlug?: string;
