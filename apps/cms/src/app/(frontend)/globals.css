@@ -1,0 +1,255 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Noka Font Face Declarations */
+@font-face {
+  font-family: 'Noka';
+  src: url('/noka-font/NokaTrial-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Noka';
+  src: url('/noka-font/NokaTrial-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Noka';
+  src: url('/noka-font/NokaTrial-Semibold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Noka';
+  src: url('/noka-font/NokaTrial-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Noka';
+  src: url('/noka-font/NokaTrial-Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+section {
+  @apply py-20;
+}
+
+/* Custom animations for services section */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-fade-in {
+  animation: fade-in-up 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+/* Glass morphism effects */
+.glass-card {
+  @apply bg-white/10 backdrop-blur-md border border-white/20 shadow-xl;
+}
+
+/* Gradient backgrounds */
+.bg-gradient-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+}
+
+/* Text effects */
+.primary-glow {
+  color: var(--primary);
+  text-shadow: 0 0 10px rgba(29, 29, 27, 0.3);
+}
+
+/* Luxury design utilities */
+.luxury-gradient {
+  background: linear-gradient(135deg, var(--luxury-black) 0%, var(--luxury-green) 50%, var(--luxury-purple) 100%);
+}
+
+.luxury-text-gradient {
+  background: linear-gradient(135deg, var(--luxury-green) 0%, var(--luxury-purple) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.luxury-shadow {
+  box-shadow: 0 25px 50px -12px rgba(29, 29, 27, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.luxury-border {
+  border: 1px solid rgba(82, 173, 119, 0.2);
+}
+
+.luxury-hover-lift {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.luxury-hover-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 35px 60px -12px rgba(29, 29, 27, 0.3);
+}
+
+.luxury-focus {
+  @apply focus:outline-none focus:ring-4 focus:ring-luxury-green/20 focus:border-luxury-green;
+}
+
+.luxury-input {
+  @apply luxury-focus bg-luxury-white/90 border-2 border-luxury-green/20 rounded-2xl px-6 py-4 font-poppins placeholder:text-gray-400 transition-all duration-300;
+}
+
+@layer base {
+  :root {
+    --luxury-black: #1d1d1b;
+    --luxury-green: #52ad77;
+    --luxury-purple: #9e4f96;
+    --luxury-white: #ffffff;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-full: 999px;
+    
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: #1d1d1b;
+    --primary-foreground: #ffffff;
+    --secondary: #52ad77;
+    --secondary-foreground: #ffffff;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: var(--radius-lg);
+  }
+  
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-montserrat;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+
+  .text-hero {
+    font-size: clamp(2.75rem, 8vw, 5rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
+
+  .text-section {
+    font-size: clamp(2rem, 5vw, 2.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    font-weight: 700;
+  }
+
+  .text-headline {
+    font-size: clamp(1.5rem, 3.25vw, 1.875rem);
+    line-height: 1.15;
+    font-weight: 600;
+  }
+
+  .text-subhead {
+    font-size: clamp(1.125rem, 2.6vw, 1.25rem);
+    line-height: 1.45;
+    font-weight: 500;
+  }
+  
+  /* Luxury scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-100 rounded-full;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-luxury-green/60 rounded-full;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-luxury-green;
+  }
+  
+  /* Luxury selection */
+  ::selection {
+    @apply bg-luxury-green/20 text-luxury-black;
+  }
+}

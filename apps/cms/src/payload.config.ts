@@ -20,8 +20,11 @@ import { Spaces } from './collections/Spaces'
 import { Subscriptions } from './collections/Subscriptions'
 import { availabilityOccupancyEndpoint } from './endpoints/availabilityOccupancy'
 import { bridgeUserResolveEndpoint } from './endpoints/bridgeUserResolve'
+import { changePasswordEndpoint } from './endpoints/changePassword'
+import { contactEndpoint } from './endpoints/contact'
 import { createCheckoutSessionEndpoint } from './endpoints/createCheckoutSession'
 import { stripeWebhookEndpoint } from './endpoints/stripeWebhook'
+import { getPayloadEmailAdapter } from './lib/email'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -56,9 +59,12 @@ export default buildConfig({
   endpoints: [
     availabilityOccupancyEndpoint,
     bridgeUserResolveEndpoint,
+    contactEndpoint,
     createCheckoutSessionEndpoint,
+    changePasswordEndpoint,
     stripeWebhookEndpoint,
   ],
+  email: getPayloadEmailAdapter(),
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

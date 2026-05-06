@@ -79,3 +79,38 @@ stripe listen --forward-to localhost:3000/api/stripe/webhook
 ```
 
 Make sure `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, and `CLIENT_URL` are set in your environment before running the checkout flow.
+
+## Email configuration
+
+Transactional emails now run through Payload's Nodemailer adapter.
+
+- `OWNER_EMAILS`: semicolon-separated owner recipients (example: `owner1@example.com;owner2@example.com`)
+- `EMAIL_FROM` / `EMAIL_FROM_NAME`: default From email identity
+- `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_SECURE`: SMTP transport configuration
+
+These variables are used for:
+
+- contact form notifications (owner + customer confirmation)
+- booking creation and payment confirmation (owner + customer)
+- new account signup notifications (owner + customer)
+
+## Auth flows
+
+### Forgot password
+
+- Endpoint: `POST /api/users/forgot-password` (Payload built-in)
+- Front page: `/forgot-password`
+- The UI always shows a generic success message to avoid user enumeration.
+- A rate limit of 5 requests / 15 minutes is applied per IP in middleware.
+
+### Reset password
+
+- Endpoint: `POST /api/users/reset-password` (Payload built-in)
+- Front page: `/reset-password?token=...`
+- Reset emails include a link to `${CLIENT_URL}/reset-password?token=...`
+
+### Change password (authenticated users)
+
+- Endpoint: `POST /api/users/change-password` (custom Payload endpoint)
+- Front page: `/account/security`
+- Requires current password verification before updating to the new password.

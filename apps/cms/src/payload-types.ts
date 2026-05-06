@@ -283,6 +283,7 @@ export interface Coach {
    */
   profilePicture?: (number | null) | Media;
   cardGradient?: ('violet_rose' | 'vert_emeraude' | 'bleu_cyan') | null;
+  category: 'fitness' | 'padel' | 'wellness';
   timezone: string;
   specialties?:
     | {
@@ -899,6 +900,7 @@ export interface CoachesSelect<T extends boolean = true> {
   bio?: T;
   profilePicture?: T;
   cardGradient?: T;
+  category?: T;
   timezone?: T;
   specialties?:
     | T

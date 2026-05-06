@@ -1,6 +1,10 @@
 import Stripe from 'stripe'
 import type { Endpoint } from 'payload'
 
+import {
+  sendBookingPaidCustomerConfirmation,
+  sendBookingPaidOwnerNotification,
+} from '../lib/transactionalEmail'
 import { getStripeClient } from '../lib/stripe'
 
 type BookingLike = {
@@ -10,6 +14,9 @@ type BookingLike = {
   stripeCheckoutSessionId?: string | null
   stripePaymentIntentId?: string | null
   user?: unknown
+  service?: unknown
+  coach?: unknown
+  startTime?: string | null
   coupon?: unknown
 }
 
@@ -28,35 +35,6 @@ function relationId(value: unknown): string | null {
 
 function metadataString(value: unknown): string | null {
   return typeof value === 'string' && value.length > 0 ? value : null
-}
-
-async function sendBookingConfirmationEmail(params: {
-  to: string
-  bookingId: string
-}): Promise<void> {
-  const apiKey = process.env.RESEND_API_KEY
-  const from = process.env.RESEND_FROM_EMAIL
-  if (!apiKey || !from) return
-
-  await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      from,
-      to: [params.to],
-      subject: 'Votre reservation est confirmee',
-      html: `
-        <div style="font-family:Arial,sans-serif;line-height:1.5;">
-          <h2>Paiement confirme</h2>
-          <p>Votre reservation #${params.bookingId} est confirmee.</p>
-          <p>Merci pour votre confiance.</p>
-        </div>
-      `,
-    }),
-  })
 }
 
 async function findBookingFromSession(
@@ -169,15 +147,31 @@ export const stripeWebhookEndpoint: Endpoint = {
           },
         })
 
-        const userEmail =
+        const user =
           typeof updated.user === 'object' && updated.user && 'email' in updated.user
-            ? String((updated.user as { email?: string }).email || '')
-            : ''
-        if (userEmail) {
-          await sendBookingConfirmationEmail({
-            to: userEmail,
+            ? (updated.user as { email?: string; firstName?: string; lastName?: string })
+            : null
+        const service =
+          typeof updated.service === 'object' && updated.service && 'name' in updated.service
+            ? (updated.service as { name?: string })
+            : null
+        const coach =
+          typeof updated.coach === 'object' && updated.coach && 'displayName' in updated.coach
+            ? (updated.coach as { displayName?: string })
+            : null
+
+        if (user?.email) {
+          const customerName = [user.firstName, user.lastName].filter(Boolean).join(' ').trim() || undefined
+          const emailData = {
             bookingId: String(updated.id),
-          })
+            customerEmail: user.email,
+            customerName,
+            startTimeIso: typeof updated.startTime === 'string' ? updated.startTime : undefined,
+            serviceName: service?.name || undefined,
+            coachName: coach?.displayName || undefined,
+          }
+          await sendBookingPaidOwnerNotification(req.payload, emailData)
+          await sendBookingPaidCustomerConfirmation(req.payload, emailData)
         }
 
         return Response.json({ received: true })
